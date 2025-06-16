@@ -1,0 +1,50 @@
+##################################################################################
+#
+#   Looping DAG Workflow Template for HTGC-3 / HTGC-3t
+#
+#   PURPOSE: To run a set of independent experiments in parallel.
+#   This file acts as a "for loop," submitting one job for each
+#   experiment defined below.
+#
+#   HOW TO RUN: condor_submit_dag workflow.dag
+#
+##################################################################################
+
+# Optional: Define a shared submit file for all jobs to keep things tidy.
+# All jobs defined below will use "experiment.sub" as their template.
+JOB_SUBMIT_FILE = experiment.sub
+
+#
+# --- Experiment "Loop" ---
+#
+# Since the jobs do not depend on each other, we simply define one job
+# for each experiment ID. HTCondor will run them in parallel as resources permit.
+# There are no PARENT/CHILD relationships needed.
+#
+
+# --- Experiment 1 ---
+# Define a job named "Exp1" which uses the template file.
+JOB Exp1 $(JOB_SUBMIT_FILE)
+# Set the variable "exp_id" to "1" for this specific job.
+VARS Exp1 exp_id="1"
+
+# --- Experiment 2 ---
+JOB Exp2 $(JOB_SUBMIT_FILE)
+VARS Exp2 exp_id="2"
+
+# --- Experiment 3 (e.g., a different model type) ---
+# The exp_id can be a string, which is great for descriptive log files.
+JOB Exp3_ViT $(JOB_SUBMIT_FILE)
+VARS Exp3_ViT exp_id="3-ViT"
+
+# --- Experiment 4 (e.g., a different learning rate) ---
+JOB Exp4_LR_0.005 $(JOB_SUBMIT_FILE)
+VARS Exp4_LR_0.005 exp_id="4-LR_0.005"
+
+# --- Add more experiments here ---
+# To add a new experiment, just copy a JOB/VARS block and change the
+# Job Name and exp_id value.
+#
+# JOB Exp5 $(JOB_SUBMIT_FILE)
+# VARS Exp5 exp_id="5"
+#
