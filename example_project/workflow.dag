@@ -1,0 +1,36 @@
+# --- START OF FILE workflow.dag ---
+
+##################################################################################
+#
+#   Example DAG Workflow for DeepZero Optimizer on ResNet20
+#
+##################################################################################
+
+# Define a shared submit file for all jobs to keep things tidy.
+JOB_SUBMIT_FILE = experiment.sub
+
+#
+# --- Experiment "Loop" with Resilience ---
+#
+# We define several experiments. The hyperparameters are encoded in the `exp_id`
+# string, which will be parsed by `src/utils.py`.
+#
+
+# --- Experiment 1: Baseline ---
+# Uses the default learning rate (0.01) and sparsity (0.1)
+JOB Exp1 $(JOB_SUBMIT_FILE)
+VARS Exp1 exp_id="baseline_lr-0.01_sp-0.1"
+RETRY Exp1 2
+
+# --- Experiment 2: Higher Learning Rate ---
+JOB Exp2 $(JOB_SUBMIT_FILE)
+VARS Exp2 exp_id="high_lr_run_lr-0.05_sp-0.1"
+RETRY Exp2 2
+
+# --- Experiment 3: Denser Model ---
+# Sparsity ratio of 0.5 means 50% of parameters are active.
+JOB Exp3 $(JOB_SUBMIT_FILE)
+VARS Exp3 exp_id="denser_model_run_sp-0.5"
+RETRY Exp3 2
+
+# --- END OF FILE workflow.dag ---

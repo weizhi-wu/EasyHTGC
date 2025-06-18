@@ -1,0 +1,23 @@
+/home/misc/your-username/projects/
+└── example_experiment/
+    │
+    ├── experiment.sub       # The HTCondor job template.
+    │
+    ├── workflow.dag         # The master workflow file defining your experiments.
+    │
+    ├── download_dataset.py  # The utility script to create the dataset archive.
+    │
+    ├── dataset.tar.gz       # <-- CRITICAL: This file MUST exist here.
+    │
+    ├── logs/                # (Empty initially) For job output logs.
+    │
+    ├── results/             # (Empty initially) For final CSV results.
+    │
+    └── src/                 # The self-contained source code package.
+        │
+        ├── run_experiment.sh
+        ├── main.py
+        ├── runner.py          # (Your new implementation)
+        ├── utils.py           # (Your new implementation)
+        ├── models.py          # (Contains the ResNet20 class)
+        └── deepzero.py        # (The optimizer implementation)
